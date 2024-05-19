@@ -169,9 +169,6 @@ om_p_c00 = torch.load(path + 'c00_omp' + '.csv')
 om_m_c00 = torch.load(path + 'c00_omm' + '.csv')
 
 
-# In[ ]:
-
-
 list_s8_p = mergeCoeffs(s8_p_s00, s8_p_s01, s8_p_s11, s8_p_c01, s8_p_c00)
 list_s8_m = mergeCoeffs(s8_m_s00, s8_m_s01, s8_m_s11, s8_m_c01, s8_m_c00)
 list_om_p = mergeCoeffs(om_p_s00, om_p_s01, om_p_s11, om_p_c01, om_p_c00)
@@ -182,9 +179,6 @@ print(len(fiducial))
 
 d_xi_ds8 = derivativeCalculator(list_s8_p, list_s8_m, 0.03)
 d_xi_dom = derivativeCalculator(list_om_p, list_om_m, 0.02)
-
-
-# In[ ]:
 
 
 dv = np.mean(np.array(fiducial)[:,0,:].reshape(998,3,75),axis=1)
@@ -206,9 +200,6 @@ mplt.plot(np.mean(dv_s8_m, axis = 0), label = 's8_m')
 #mplt.plot(list_om_p[0][0], label = 'om_p_0')
 
 mplt.legend()
-
-
-# In[ ]:
 
 
 def plotFisher(results):
@@ -236,9 +227,6 @@ def plotFisher(results):
             legend_loc='upper right',colors=['red','blue','black','black','black'],
             contour_ls =['-','-','-','-.','-'],contour_colors=['red','blue','black','black','black'],param_limits={'Om': [0.1,0.5], 
                     's8': [0.6,1.0]})
-
-
-# In[ ]:
 
 
 def calcFisherMatrix(d_xi_ds8, d_xi_dom, cov, name, penalty = False, num_sims = 1000):
@@ -272,9 +260,6 @@ def calcFisherMatrix(d_xi_ds8, d_xi_dom, cov, name, penalty = False, num_sims = 
     results[name] = C_par_2
     
     plotFisher(results)
-
-
-# In[ ]:
 
 
 #This cell is used to calculate Fisher Forecast Matrices with the addition of a new set of moments for each plot
@@ -338,8 +323,6 @@ d_xi_ds8 = derivativeCalculator(list_s8_p, list_s8_m, 0.03)
 d_xi_dom = derivativeCalculator(list_om_p, list_om_m, 0.02)
 #calcFisherMatrix(d_xi_ds8, d_xi_dom, cov, 'all')
 
-
-# In[ ]:
 
 
 
