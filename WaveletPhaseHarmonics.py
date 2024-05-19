@@ -19,7 +19,7 @@ from s2wav.filter_factory.filters import filters_directional
 
 def convolve_fields(field, nside, N, device):  
     use_c_backend = False
-    if(device == 'cpu'):
+    if(device == 'JAX'):
         use_c_backend=True
     m = field
     filter_ = filters_directional(L= nside*2,N= N,J_min= 3,lam = 2.0,spin = 0,spin0 = 0)
