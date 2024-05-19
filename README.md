@@ -10,7 +10,7 @@ Wavelet Phase Harmonics are calculations of the covariance between fields produc
 Currently In Progress: JAX Implementation, Implenting Spatial Shift Input 
 ## Usage/Examples
 
-Calculations are performed in [WPH_S2Wav](https://github.com/MichaelJacob914/WaveletPhaseHarmonics/blob/main/WPH_S2Wav.py) 
+Calculations are performed in [WaveletPhaseHarmonics](https://github.com/MichaelJacob914/WaveletPhaseHarmonics/blob/main/WaveletPhaseHarmonics.py)
 
 
 Create a WaveletPhaseHarmonics object, and call the following functions to calculate the s00, s01, s11, c01, and c00 moments respectively. 
@@ -55,9 +55,9 @@ and get methods for the moments and corresponding indices are provided above as 
 
 Indices are of the above (j,l) where j is the scale of the wavelet used for the calculation and l is the angular orientation. For the C00 and C01 moments which use two wavelets, indices are of the form (j1, l1, j2, l2). 
 
-Code for parallelization for multiplie simulations is provided in [fisher_S2Wav](https://github.com/MichaelJacob914/WaveletPhaseHarmonics/blob/main/fisher_S2Wav.py)
+Code for parallelization for multiplie simulations is provided in [fisher_S2Wav](https://github.com/MichaelJacob914/WaveletPhaseHarmonics/blob/main/run_S2Wav.py)
 
-Code for generating Fisher Forecasts based on the coefficients is provided in [FisherForeCast]()
+Code for generating Fisher Forecasts based on the coefficients is provided in [FisherForeCast](https://github.com/MichaelJacob914/WaveletPhaseHarmonics/blob/main/FisherForecast.py)
 
 [Demo](https://github.com/MichaelJacob914/WaveletPhaseHarmonics/tree/main/demo) provides a sample field as well as code to perform a single calculation of the WaveletPhaseHarmonic moments 
 
