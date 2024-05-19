@@ -27,7 +27,7 @@ Parameters:
 
 `n_side` - n_side of tensor_field. NOTE: Increasing n_side causes significant increase to time taken per calculation
 
-`device` - Specify 'cpu' to use JAX implementation of S2WAV on CPU, else default is without JAX
+`device` - Specify 'JAX' to use JAX implementation of S2WAV on CPU, any other value will default to without JAX
 
 
 ``` python
