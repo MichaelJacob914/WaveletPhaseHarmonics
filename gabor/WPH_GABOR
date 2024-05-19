@@ -1,3 +1,7 @@
+#This file contains the code for the Gabor Wavelet, another anisotropic wavelet not featured in S2WAV. It is currently not being used in 
+#calculation of the WPH moments as S2WAVs convolution on the sphere does not allow for external input of wavelets but may be used later
+#with a self-implemented form of convolution for comparison. In this code, the standard np.cov is used though this is not accurate for spherical convolutoins
+
 import healpy as hp
 import numpy as np
 import numpy as numpy
