@@ -62,19 +62,5 @@ Code for generating Fisher Forecasts based on the coefficients is provided in [F
 ## Acknowledgements
 
  - [s2wav](https://github.com/astro-informatics/s2wav)
- 
 
-
-
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`API_KEY`
-
-`ANOTHER_API_KEY`
-
-
-
- - [s2wav](https://github.com/astro-informatics/s2wav)
  
