@@ -25,7 +25,10 @@ def convolve_fields(field, nside, N, device):
     filter_ = filters_directional(L= nside*2,N= N,J_min= 3,lam = 2.0,spin = 0,spin0 = 0)
     L = nside*2
     # Compute wavelet coefficients
-    f_wav, f_scal = s2wav.analysis(jnp.array(m), L = nside*2, N = N, nside = nside,sampling="healpix", filters = filter_, use_c_backend = use_c_backend)
+    if(use_c_backend):
+        f_wav, f_scal = s2wav.analysis(jnp.array(m), L = nside*2, N = N, nside = nside,sampling="healpix", filters = filter_)
+        return f_wav
+    f_wav, f_scal = s2wav.analysis(m, L = nside*2, N = N, nside = nside,sampling="healpix", filters = filter_)
     
     return f_wav
 
