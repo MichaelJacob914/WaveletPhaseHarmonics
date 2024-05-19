@@ -22,7 +22,9 @@ in_tensor = np.load('map_512_test.npy')
 
 in_tensor = torch.from_numpy(in_tensor)
 
+#This line defines the nside and degrades the map accordingly, change to 512 for preserved map
 nside = 64
+in_tensor = hp.ud_grade(in_tensor, nside_out = nside)
 
 wph = WaveletPhaseHarmonics(tensor_field = sim_init, J = 5, L = 2, J_min = 3, nside=nside, device = 'cpu')
 
