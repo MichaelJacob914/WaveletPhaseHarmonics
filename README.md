@@ -7,7 +7,7 @@ This repository is used to perform calculations of Wavelet Phase Harmonic Moment
 
 Wavelet Phase Harmonics are calculations of the covariance between fields produced by different frequencies of wavelets convolved with an input field. It is a statistical method intended to draw out non-gaussian information, and in this repository we provide code to calculate the wavelet phase harmonic moments of fields that exist on the Sphere. 
 
-Currently In Progress: JAX Implementation, Implenting Spatial Shift Input 
+Currently In Progress: Implementing Spatial Shift Input 
 ## Usage/Examples
 
 Calculations are performed in [WaveletPhaseHarmonics](https://github.com/MichaelJacob914/WaveletPhaseHarmonics/blob/main/WaveletPhaseHarmonics.py)
@@ -27,8 +27,7 @@ Parameters:
 
 `n_side` - n_side of tensor_field. NOTE: Increasing n_side causes significant increase to time taken per calculation
 
-`device` - CPU vs GPU, working on JAX implementation
-
+`device` - Specify 'cpu' to use JAX implementation of S2WAV on CPU, else default is without JAX
 
 
 ``` python
