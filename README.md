@@ -5,7 +5,9 @@ This repository is used to perform calculations of Wavelet Phase Harmonic Moment
 
 # Wavlet Phase Harmonics 
 
-Add description of Wavelet Phase Harmonics here
+Wavelet Phase Harmonics are calculations of the covariance between fields produced by different frequencies of wavelets convolved with an input field. It is a statistical method intended to draw out non-gaussian information, and in this repository we provide code to calculate the wavelet phase harmonic moments of fields that exist on the Sphere. 
+
+Currently In Progress: JAX Implementation, Implenting Spatial Shift Input 
 ## Usage/Examples
 
 Calculations are performed in [WPH_S2Wav](https://github.com/MichaelJacob914/WaveletPhaseHarmonics/blob/main/WPH_S2Wav.py) 
@@ -57,10 +59,14 @@ Code for parallelization for multiplie simulations is provided in [fisher_S2Wav]
 
 Code for generating Fisher Forecasts based on the coefficients is provided in [FisherForeCast]()
 
-[Demo] provides a sample field as well as code to perform a single calculation of the WaveletPhaseHarmonic moments 
+[Demo](https://github.com/MichaelJacob914/WaveletPhaseHarmonics/tree/main/demo) provides a sample field as well as code to perform a single calculation of the WaveletPhaseHarmonic moments 
 
 ## Acknowledgements
 
  - [s2wav](https://github.com/astro-informatics/s2wav)
+ 
+
+
+
 
  
