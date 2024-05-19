@@ -17,12 +17,15 @@ import torch
 import jax.numpy as jnp
 from s2wav.filter_factory.filters import filters_directional
 
-def convolve_fields(field, nside, N):      
+def convolve_fields(field, nside, N, device):  
+    use_c_backend = False
+    if(device == 'cpu'):
+        use_c_backend=True
     m = field
     filter_ = filters_directional(L= nside*2,N= N,J_min= 3,lam = 2.0,spin = 0,spin0 = 0)
     L = nside*2
     # Compute wavelet coefficients
-    f_wav, f_scal = s2wav.analysis(jnp.array(m), L = nside*2, N = N, nside = nside,sampling="healpix", filters = filter_)
+    f_wav, f_scal = s2wav.analysis(jnp.array(m), L = nside*2, N = N, nside = nside,sampling="healpix", filters = filter_, use_c_backend = use_c_backend)
     
     return f_wav
 
