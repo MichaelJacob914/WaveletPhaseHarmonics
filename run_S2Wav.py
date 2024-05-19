@@ -26,10 +26,6 @@ nside = 64
 index = np.arange(hp.nside2npix(nside))
 nest = False
 
-polar, azimuthal = hp.pixelfunc.pix2ang(nside, index, nest=nest)
-
-#theta, phi = np.mgrid[0:np.pi:512j, 0:2 * np.pi:512j]
-
 list_full = list()
 
 run_count = 0
@@ -53,7 +49,7 @@ while run_count < number_of_runs:
         #sim_init = F[run_count][1]
         #sim_init = hp.ud_grade(sim_init,nside_out=64)
         #sim = torch.from_numpy(sim_init).to(device).contiguous()
-        wph = WaveletPhaseHarmonics(tensor_field = sim_init, J = 5, L = 2, J_min = 3, azimuthal = azimuthal, polar = polar, nside=nside, device = 'cpu')
+        wph = WaveletPhaseHarmonics(tensor_field = sim_init, J = 5, L = 2, J_min = 3, nside=nside, device = 'cpu')
         wph.calculate_s00()
         wph.calculate_s01()
         wph.calculate_s11()
@@ -79,5 +75,6 @@ while run_count < number_of_runs:
     comm.Barrier() 
 
 #change file name
-torch.save(list_full, 'nside64_J3to5_L2_c00_omm.csv')
+file_name = 'FILE_NAME.csv'
+torch.save(list_full, file_name)
 
