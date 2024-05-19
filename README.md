@@ -1,3 +1,4 @@
+
 # Wavelet Phase Harmonics Repository
 
 This repository is used to perform calculations of Wavelet Phase Harmonic Moments for Data on the Sphere, using wavelets and convolution from S2WAV repository. 
@@ -12,8 +13,24 @@ Calculations are performed in [WPH_S2Wav](https://github.com/MichaelJacob914/Wav
 
 Create a WaveletPhaseHarmonics object, and call the following functions to calculate the s00, s01, s11, c01, and c00 moments respectively. 
 
+Parameters: 
+
+`tensor_field` - Field to calculate moments for
+
+`J` - Number of scales 
+
+`L` - Number of orientations is given by 2L - 1
+
+`J_min` - Minimum scale of wavelet to perform calculation with
+
+`n_side` - n_side of tensor_field. NOTE: Increasing n_side causes significant increase to time taken per calculation
+
+`device` - CPU vs GPU, working on JAX implementation
+
+
+
 ``` python
-wph = WaveletPhaseHarmonics(tensor_field = sim_init, J = 5, L = 2, J_min = 3, nside=nside, device = 'cpu')
+wph = WaveletPhaseHarmonics(tensor_field = sim_init, J = 5, L = 2, J_min = 3, azimuthal = azimuthal, polar = polar, nside=nside, device = 'cpu')
 
 wph.calculate_s00()
 wph.calculate_s01()
@@ -43,6 +60,21 @@ Code for generating Fisher Forecasts based on the coefficients is provided in [F
 [Demo] provides a sample field as well as code to perform a single calculation of the WaveletPhaseHarmonic moments 
 
 ## Acknowledgements
+
+ - [s2wav](https://github.com/astro-informatics/s2wav)
+ 
+
+
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`API_KEY`
+
+`ANOTHER_API_KEY`
+
+
 
  - [s2wav](https://github.com/astro-informatics/s2wav)
  
