@@ -185,7 +185,7 @@ class WaveletPhaseHarmonics:
                 tau.append(temp)
         return tau
   
-  def moments_calculator(self, J = -1,L = -1):
+  def calculate_moments(self, J = -1,L = -1):
       if(J != -1):
         self.J = J
       if(L != -1):
