@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 #General Import Statements
 import glob
 import os
@@ -19,9 +13,6 @@ from getdist.gaussian_mixtures import GaussianND
 from getdist import plots, MCSamples
 import copy
 import torch
-
-
-# In[2]:
 
 
 #Functions used to perform Fisher Analysis/test coefficients
@@ -138,10 +129,6 @@ def calculateCovariance(initial_list, start = 0, printer = False):
         
     return cov
 
-
-# In[3]:
-
-
 #data path
 path = ''
 s00 = torch.load(path + 's00' + '_fiducial.csv')
@@ -154,12 +141,8 @@ coeffs = mergeCoeffs(s00 = s00, s01 = s01, s11 = s11, c01 = c01, c00 = c00)
 
 calculateCovariance(coeffs)
 
-
-# In[ ]:
-
-
 #load derivative cellblock
-path = '/Users/michaeljacob/Downloads/Derivatives/nside64_J3to5_L2_'
+path = 'Derivatives/nside64_J3to5_L2_'
 s8_p_s00 = torch.load(path + 's00_s8p' + '.csv')
 s8_m_s00 = torch.load(path + 's00_s8m' + '.csv')
 om_p_s00 = torch.load(path + 's00_omp' + '.csv')
@@ -174,10 +157,6 @@ s8_p_s11 = torch.load(path + 's11_s8p' + '.csv')
 s8_m_s11 = torch.load(path + 's11_s8m' + '.csv')
 om_p_s11 = torch.load(path + 's11_omp' + '.csv')
 om_m_s11 = torch.load(path + 's11_omm' + '.csv')
-
-
-# In[ ]:
-
 
 s8_p_c01 = torch.load(path + 'c01_s8p' + '.csv')
 s8_m_c01 = torch.load(path + 'c01_s8m' + '.csv')
