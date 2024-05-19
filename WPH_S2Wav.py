@@ -111,14 +111,12 @@ class WaveletPhaseHarmonics:
   WaveletPhaseHarmonics is a class performing the calculations for the 5
   moments of the wavelet phase harmonics statistical method on a sphere
   """
-  def __init__(self,tensor_field, J, L, J_min, azimuthal, polar, nside, device = 'cpu'):
+  def __init__(self,tensor_field, J, L, J_min, nside, device = 'cpu'):
     #Parameters passed in through constructor
       self.tensor_field = tensor_field
       self.J = J
       self.L = L
       self.J_min = J_min
-      self.azimuthal = azimuthal
-      self.polar = polar
       self.nside = nside
       self.device = device
       self.Moments = dict()
