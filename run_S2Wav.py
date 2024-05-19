@@ -35,7 +35,7 @@ header = 'omm' #change this header to alter files read in
 d_again = d[()]
 F = d_again[header]
 
-
+start_initial = time.time()
 while run_count < number_of_runs:
     comm = MPI.COMM_WORLD
     if run_count+comm.rank<number_of_runs:
@@ -74,6 +74,8 @@ while run_count < number_of_runs:
     comm.Barrier() 
 
 #change file name
+final = time.time()
+print('Total time for all runs: ', final - start_initial)
 file_name = 'FILE_NAME.csv'
 torch.save(list_full, file_name)
 
