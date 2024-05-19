@@ -13,7 +13,7 @@ Calculations are performed in [WPH_S2Wav](https://github.com/MichaelJacob914/Wav
 Create a WaveletPhaseHarmonics object, and call the following functions to calculate the s00, s01, s11, c01, and c00 moments respectively. 
 
 ``` python
-wph = WaveletPhaseHarmonics(tensor_field = sim_init, J = 5, L = 2, J_min = 3, azimuthal = azimuthal, polar = polar, nside=nside, device = 'cpu')
+wph = WaveletPhaseHarmonics(tensor_field = sim_init, J = 5, L = 2, J_min = 3, nside=nside, device = 'cpu')
 
 wph.calculate_s00()
 wph.calculate_s01()
