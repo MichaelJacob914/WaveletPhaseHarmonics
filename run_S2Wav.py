@@ -16,7 +16,6 @@ import torch
 import WPH_S2Wav
 from WPH_S2Wav import WaveletPhaseHarmonics
 from mpi4py import MPI
-import timeit
 
 d = np.load('maps_fisher_64.npy', allow_pickle = True)
 
@@ -40,7 +39,7 @@ F = d_again[header]
 while run_count < number_of_runs:
     comm = MPI.COMM_WORLD
     if run_count+comm.rank<number_of_runs:
-        start = timeit.timeit()
+        start = time.time()
         sim_init = np.zeros(64**2*12)
         counter = 0
         for pixel in F[run_count][0]:
@@ -67,7 +66,7 @@ while run_count < number_of_runs:
         coeffs.append(c01)
         coeffs.append(c00)
         list_full.append(coeffs)
-        end = timeit.timeit()
+        end = time.time()
         print("doing interation", run_count)
         print('time taken', end - start)
     run_count+=comm.size
