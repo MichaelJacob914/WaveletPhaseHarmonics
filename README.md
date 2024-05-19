@@ -31,7 +31,7 @@ Parameters:
 
 
 ``` python
-wph = WaveletPhaseHarmonics(tensor_field = sim_init, J = 5, L = 2, J_min = 3, azimuthal = azimuthal, polar = polar, nside=nside, device = 'cpu')
+wph = WaveletPhaseHarmonics(tensor_field = sim_init, J = 5, L = 2, J_min = 3, nside=nside, device = 'cpu')
 
 wph.calculate_s00()
 wph.calculate_s01()
