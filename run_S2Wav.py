@@ -18,7 +18,7 @@ from WPH_S2Wav import WaveletPhaseHarmonics
 from mpi4py import MPI
 
 def convert(seconds):
-    return time.strftime("%H:%M:%S", time.gmtime(n))
+    return time.strftime("%H:%M:%S", time.gmtime(seconds))
 
 d = np.load('maps_fisher_64.npy', allow_pickle = True)
 
