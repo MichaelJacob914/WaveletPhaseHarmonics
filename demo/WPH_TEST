@@ -1,0 +1,68 @@
+import healpy as hp
+import numpy as np
+import copy
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.pyplot as plt
+from pylab import cm
+import torch.nn as nn
+from scipy.special import sph_harm, factorial
+from scipy import ndimage
+from scipy import signal
+import time
+import numpy as np
+import warnings
+import torch
+import WPH
+from WPH import WaveletPhaseHarmonics
+
+
+
+in_tensor = np.load('map_512_test.npy')
+
+in_tensor = torch.from_numpy(in_tensor)
+
+nside = 64
+
+wph = WaveletPhaseHarmonics(tensor_field = sim_init, J = 5, L = 2, J_min = 3, nside=nside, device = 'cpu')
+
+start = time.time()
+wph.calculate_s00()
+end = time.time()
+print('Time for s00 moments', end - start)
+
+start = time.time()
+wph.calculate_s01()
+end = time.time()
+print('Time for s01 moments', end - start)
+
+start = time.time()
+wph.calculate_s11()
+end = time.time()
+print('Time for s11 moments', end - start)
+
+start = time.time()
+wph.calculate_c01()
+end = time.time()
+print('Time for c01 moments', end - start)
+
+start = time.time()
+wph.calculate_c00()
+end = time.time()
+print('Time for c00 moments', end - start)
+        
+s00, s00_indices = wph.get_coeffs("S00")
+print('Number of s00 coefficients', len(s00))
+
+s01, s01_indices = wph.get_coeffs("S01")
+print('Number of s01 coefficients', len(s01))
+
+s11, s11_indices = wph.get_coeffs("S11")
+print('Number of s11 coefficients', len(s11))
+
+c01, c01_indices = wph.get_coeffs("C01")
+print('Number of c01 coefficients', len(c01))
+
+c00, c00_indices = wph.get_coeffs("C00")
+print('Number of c00 coefficients', len(c00))
+
