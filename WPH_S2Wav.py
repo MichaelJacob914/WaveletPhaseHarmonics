@@ -26,7 +26,6 @@ def convolve_fields(field, nside, N):
     
     return f_wav
 
-
 def convert_to_pix_coord(ra, dec, nside=512):
     """
     Converts RA, DEC to HEALPix pixel coordinates.
@@ -59,32 +58,6 @@ def IndexToDeclRa(index, nside, nest=False):
     theta, phi = hp.pixelfunc.pix2ang(nside, index, nest=nest)
     return theta, phi
     #return -np.degrees(theta - np.pi / 2.), np.degrees(phi)
-
-def gabor_3(azimuthal, polar, L, J, l, j, n = 0, alpha = 0):
-    """
-    Wavelet used in WPH at each dyadic scale j and rotatiton L.
-
-    Args:
-    
-    Returns:
-        array of values of the Directional Morlet Wavelet for each value of theta, phi
-    """
-    a = azimuthal + np.pi * l/L
-    p = polar
-    kx = (6 + 3*n*np.cos(alpha))*(2**j)
-    ky = (0 + 3*n*np.sin(alpha))*(2**j)
-    j = j
-    ks = kx ** 2 + ky ** 2
-    #tau_x = n*(2**j)*np.cos(p)
-    #tau_y = n*(2**j)*np.sin(p)
-
-    Nk = ((1 + (3 * np.exp(-ks/2)) - (4 * np.exp(-3*ks/8)))**(-1/2))
-
-    t1 = np.exp(-2 * np.tan(p/2) ** 2 * 2**j)
-    t2 = np.exp(2j/np.sqrt(2) * np.tan(p/2) *  (kx * (np.cos(a)) + ky * (np.sin(a)) * 2**j))
-    t3 = np.exp(-ks/4)
-    GABOR = np.sqrt(2/np.pi) * Nk * (1 + np.tan(p/2) ** 2) * t1 * (t2 - t3)
-    return GABOR
 
 def healpix_to_tensor(in_tensor, nside, n_bins):
     nest = False
