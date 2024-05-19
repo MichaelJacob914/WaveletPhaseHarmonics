@@ -63,6 +63,8 @@ Code for generating Fisher Forecasts based on the coefficients is provided in [F
 ## Acknowledgements
 
  - [s2wav](https://github.com/astro-informatics/s2wav)
+ - MJ and SK thank Marco Gatti and Bhuvnesh Jain for their research support
+ - map_512_test.npy is a test map courtesy of Marco Gatti and DES
  
 
 
