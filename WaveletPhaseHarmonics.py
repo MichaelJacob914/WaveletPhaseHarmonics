@@ -249,7 +249,7 @@ class WaveletPhaseHarmonics:
     return (self.Moments.get(st), self.Indices.get(st))
 
   def S_0_0_moments_calculator(self, tau_s_0_0, J, L):
-    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L)
+    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
     moments = list()
     j_list = list()
     for j in range(self.J_min, len(field)):
@@ -266,7 +266,7 @@ class WaveletPhaseHarmonics:
     return (moments, j_list)
 
   def S_0_1_moments_calculator(self, tau_s_0_1, J, L):
-    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L)
+    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
     moments = list()
     j_list = list()
     for j in range(self.J_min, len(field)):
@@ -282,7 +282,7 @@ class WaveletPhaseHarmonics:
                          
 
   def S_1_1_moments_calculator(self, tau_s_1_1, J, L):
-    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L)
+    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
     moments = list()
     j_list = list()
     for j in range(self.J_min, len(field)):
@@ -297,7 +297,7 @@ class WaveletPhaseHarmonics:
     return (moments, j_list)
 
   def C_0_0_moments_calculator(self, tau_c_0_0, J, L):
-    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L)
+    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
     moments = list()
     j_list = list()
     for j2 in range(self.J_min, len(field)):
@@ -325,7 +325,7 @@ class WaveletPhaseHarmonics:
     return (moments, j_list)
       
   def C_0_1_moments_calculator(self, tau_s_0_1, tau_c_0_1, J, L):
-    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L)
+    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
     moments = list()
     j_list = list()
     for j2 in range(self.J_min, len(field)):
