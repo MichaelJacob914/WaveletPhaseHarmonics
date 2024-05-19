@@ -17,6 +17,9 @@ import WPH_S2Wav
 from WPH_S2Wav import WaveletPhaseHarmonics
 from mpi4py import MPI
 
+def convert(seconds):
+    return time.strftime("%H:%M:%S", time.gmtime(n))
+
 d = np.load('maps_fisher_64.npy', allow_pickle = True)
 
 nside = 64
@@ -74,7 +77,7 @@ while run_count < number_of_runs:
     comm.Barrier() 
 
 #change file name
-final = time.time()
+final = convert(time.time())
 print('Total time for all runs: ', final - start_initial)
 file_name = 'FILE_NAME.csv'
 torch.save(list_full, file_name)
