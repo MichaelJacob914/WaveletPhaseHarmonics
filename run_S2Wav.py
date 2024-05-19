@@ -77,8 +77,9 @@ while run_count < number_of_runs:
     comm.Barrier() 
 
 #change file name
-final = convert(time.time())
-print('Total time for all runs: ', final - start_initial)
+final = time.time()
+total_time = convert(final - start_initial)
+print('Total time for all runs: ', total_time)
 file_name = 'FILE_NAME.csv'
 torch.save(list_full, file_name)
 
