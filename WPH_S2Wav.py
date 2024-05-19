@@ -211,7 +211,7 @@ class WaveletPhaseHarmonics:
       self.Indices['C00'] = c_0_0_indices
 
 
-  def s00_calculator(self, J = -1, L = -1):
+  def calculate_s00(self, J = -1, L = -1):
       if(J != -1):
         self.J = J
       if(L != -1):
@@ -222,7 +222,7 @@ class WaveletPhaseHarmonics:
       self.Moments['S00'] = s_0_0_moments
       self.Indices['S00'] = s_0_0_indices
 
-  def s01_calculator(self, J = -1, L = -1):
+  def calculate_s01(self, J = -1, L = -1):
       if(J != -1):
         self.J = J
       if(L != -1):
@@ -233,7 +233,7 @@ class WaveletPhaseHarmonics:
       self.Moments['S01'] = s_0_1_moments
       self.Indices['S01'] = s_0_1_indices
 
-  def s11_calculator(self, J = -1, L = -1):
+  def calculate_s11(self, J = -1, L = -1):
       if(J != -1):
         self.J = J
       if(L != -1):
@@ -244,7 +244,7 @@ class WaveletPhaseHarmonics:
       self.Moments['S11'] = s_1_1_moments
       self.Indices['S11'] = s_1_1_indices
   
-  def c01_calculator(self, J = -1, L = -1):
+  def calculate_c01(self, J = -1, L = -1):
       if(J != -1):
         self.J = J
       if(L != -1):
@@ -255,7 +255,7 @@ class WaveletPhaseHarmonics:
       self.Moments['C01'] = c_0_1_moments
       self.Indices['C01'] = c_0_1_indices
 
-  def c00_calculator(self, J = -1, L = -1):
+  def calculate_c00(self, J = -1, L = -1):
       if(J != -1):
         self.J = J
       if(L != -1):
