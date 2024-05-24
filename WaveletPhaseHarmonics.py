@@ -106,6 +106,8 @@ class WaveletPhaseHarmonics:
       self.tau_s_1_1 = self.fill_tau([2])
       self.tau_c_0_0 = self.fill_tau([2])
       self.tau_c_0_1 = self.fill_tau([2])
+      #This is the field of convolutions, rather than an actual map
+      self.field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
   
   def fill_tau(self, j_list = [0]):
         '''
@@ -249,7 +251,8 @@ class WaveletPhaseHarmonics:
     return (self.Moments.get(st), self.Indices.get(st))
 
   def S_0_0_moments_calculator(self, tau_s_0_0, J, L):
-    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
+    #field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
+    field = self.field
     moments = list()
     j_list = list()
     for j in range(self.J_min, len(field)):
@@ -266,7 +269,7 @@ class WaveletPhaseHarmonics:
     return (moments, j_list)
 
   def S_0_1_moments_calculator(self, tau_s_0_1, J, L):
-    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
+    field = self.field
     moments = list()
     j_list = list()
     for j in range(self.J_min, len(field)):
@@ -282,7 +285,7 @@ class WaveletPhaseHarmonics:
                          
 
   def S_1_1_moments_calculator(self, tau_s_1_1, J, L):
-    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
+    field = self.field
     moments = list()
     j_list = list()
     for j in range(self.J_min, len(field)):
@@ -297,7 +300,7 @@ class WaveletPhaseHarmonics:
     return (moments, j_list)
 
   def C_0_0_moments_calculator(self, tau_c_0_0, J, L):
-    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
+    field = self.field
     moments = list()
     j_list = list()
     for j2 in range(self.J_min, len(field)):
@@ -325,7 +328,7 @@ class WaveletPhaseHarmonics:
     return (moments, j_list)
       
   def C_0_1_moments_calculator(self, tau_s_0_1, tau_c_0_1, J, L):
-    field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
+    field = self.field
     moments = list()
     j_list = list()
     for j2 in range(self.J_min, len(field)):
