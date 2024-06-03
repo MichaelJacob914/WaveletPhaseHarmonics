@@ -25,7 +25,7 @@ Parameters:
 
 `J_min` - Minimum scale of wavelet to perform calculation with
 
-`n_side` - n_side of tensor_field. NOTE: Increasing n_side causes significant increase to time taken per calculation
+`nside` - nside of tensor_field. NOTE: Increasing nside causes significant increase to time taken per calculation
 
 `device` - Specify 'JAX' to use JAX implementation of S2WAV on CPU, any other value will default to without JAX
 
