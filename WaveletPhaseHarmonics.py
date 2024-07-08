@@ -1,9 +1,6 @@
 import healpy as hp
 import numpy as np
-import numpy as numpy
 import copy
-import matplotlib.pyplot as plt
-import numpy as np
 import matplotlib.pyplot as plt
 from pylab import cm
 import torch.nn as nn
@@ -15,22 +12,68 @@ import warnings
 import s2wav
 import torch
 import jax.numpy as jnp
-from s2wav.filter_factory.filters import filters_directional
+from s2wav.filters import filters_directional
+from scipy.ndimage import zoom
 
-def convolve_fields(field, nside, N, device):  
+def convolve_fields(field, nside, N, device, use_c_backend, L, J_min):  
+    field = healpy_to_array(field, nside)
+
     use_c_backend = False
-    if(device == 'JAX'):
-        use_c_backend=True
     m = field
     filter_ = filters_directional(L= nside*2,N= N,J_min= 3,lam = 2.0,spin = 0,spin0 = 0)
     L = nside*2
     # Compute wavelet coefficients
     if(use_c_backend):
-        f_wav, f_scal = s2wav.analysis(jnp.array(m), L = nside*2, N = N, nside = nside,sampling="healpix", filters = filter_)
+        f_wav, f_scal = s2wav.analysis(jnp.array(m), L = L, N = N, nside = nside,sampling="healpix", filters = filter_)
         return f_wav
-    f_wav, f_scal = s2wav.analysis(m, L = nside*2, N = N, nside = nside,sampling="healpix", filters = filter_)
-    
+    f_wav, f_scal = s2wav.analysis(m, L = L, N = N, filters = filter_, J_min = J_min)
     return f_wav
+
+def upsample_sphere_signal(signal, target_shape):
+    """
+    Upsamples a signal on the sphere to a target shape using bilinear interpolation.
+
+    Args:
+        signal (np.ndarray): Input signal with dimensions [n_phi, n_theta].
+        target_shape (tuple): Target shape (m_phi, m_theta) where m_phi > n_phi and m_theta > n_theta.
+
+    Returns:
+        np.ndarray: Upsampled signal with dimensions [m_phi, m_theta].
+    """
+    n_phi, n_theta = signal.shape
+    m_phi, m_theta = target_shape
+    
+    # Calculate zoom factors
+    zoom_factor_phi = m_phi / n_phi
+    zoom_factor_theta = m_theta / n_theta
+    
+    # Perform interpolation using bilinear method (order=1)
+    upsampled_signal = zoom(signal, (zoom_factor_phi, zoom_factor_theta), order=1)
+    
+    return upsampled_signal
+
+def healpy_to_array(healpix_map, nside):
+    # Number of pixels in the HEALPix map
+    npix = hp.nside2npix(nside)
+    
+    # Determine the number of theta and phi bins
+    n_theta = 2 * nside
+    n_phi = 4 * nside
+    
+    # Create arrays for theta and phi
+    theta, phi = hp.pix2ang(nside, np.arange(npix))
+    
+    # Initialize the output array
+    array = np.zeros((n_theta, n_phi))
+    
+    # Convert theta and phi to indices
+    theta_idx = np.floor(theta / np.pi * n_theta).astype(int)
+    phi_idx = np.floor(phi / (2 * np.pi) * n_phi).astype(int)
+    
+    # Fill the output array with the healpix_map values
+    array[theta_idx, phi_idx] = healpix_map
+    
+    return array
 
 def convert_to_pix_coord(ra, dec, nside=512):
     """
@@ -90,13 +133,14 @@ class WaveletPhaseHarmonics:
   WaveletPhaseHarmonics is a class performing the calculations for the 5
   moments of the wavelet phase harmonics statistical method on a sphere
   """
-  def __init__(self,tensor_field, J, L, J_min, nside, device = 'cpu'):
+  def __init__(self,tensor_field, J, N, J_min, nside, device = 'cpu', use_c_backend = False, L = 0):
     #Parameters passed in through constructor
       self.tensor_field = tensor_field
       self.J = J
-      self.L = L
+      self.N = N
       self.J_min = J_min
       self.nside = nside
+      self.L = L
       self.device = device
       self.Moments = dict()
       self.Indices = dict()
@@ -107,7 +151,9 @@ class WaveletPhaseHarmonics:
       self.tau_c_0_0 = self.fill_tau([2])
       self.tau_c_0_1 = self.fill_tau([2])
       #This is the field of convolutions, rather than an actual map
-      self.field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
+      self.use_c_backend = use_c_backend
+      self.field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.N, device = self.device, use_c_backend = self.use_c_backend, L = self.L, J_min = self.J_min)
+      
   
   def fill_tau(self, j_list = [0]):
         '''
@@ -247,8 +293,17 @@ class WaveletPhaseHarmonics:
 
   def get_coeffs(self, st):
     x = self.Moments.get(st)
-    print(type(x))
     return (self.Moments.get(st), self.Indices.get(st))
+
+
+  def get_all_coeffs(self):
+    s00, s00_indices = self.get_coeffs("S00")
+    s01, s01_indices = self.get_coeffs("S01")
+    s11, s11_indices = self.get_coeffs("S11")
+    c01, c01_indices = self.get_coeffs("C01")
+    c00, c00_indices = self.get_coeffs("C00")
+    coeffs = s00 + s01 + s11 + c01 + c00
+    return coeffs
 
   def S_0_0_moments_calculator(self, tau_s_0_0, J, L):
     #field = convolve_fields(field=self.tensor_field, nside=self.nside, N=self.L, device = self.device)
@@ -258,6 +313,8 @@ class WaveletPhaseHarmonics:
     for j in range(self.J_min, len(field)):
         for l in range(len(field[j])): 
             moment_1 = field[j][l]
+            #print('Moment', moment_1)
+            #print('j', j)
             moment_1 = abs(moment_1)
             moment_2 = abs(moment_1)
             moment = np.cov(moment_1, moment_2)
@@ -275,6 +332,7 @@ class WaveletPhaseHarmonics:
     for j in range(self.J_min, len(field)):
         for l in range(len(field[j])): 
             moment_1 = field[j][l]
+            #print(moment_1)
             moment_2 = abs(moment_1)
             moment = np.cov(moment_1, moment_2)
             moment = np.mean(moment)
@@ -291,6 +349,7 @@ class WaveletPhaseHarmonics:
     for j in range(self.J_min, len(field)):
         for l in range(len(field[j])): 
             moment_1 = field[j][l]
+            #print(moment_1)
             moment_2 = moment_1
             moment = np.cov(moment_1, moment_2)
             moment = np.mean(moment)
@@ -308,8 +367,11 @@ class WaveletPhaseHarmonics:
             for l2 in range(len(field[j2])):
                 for l1 in range(len(field[j2])):
                     if(l1 == l2):
+                        len_1 = len(field[j2][l2])
+                        len_2 = len(field[j2][l2][0])
                         moment_1 = field[j1][l1]
                         moment_1 = abs(moment_1)
+                        moment_1 = upsample_sphere_signal(moment_1, (len_1, len_2))
                         moment_2 = field[j2][l2]
                         moment_2 = abs(moment_2)
                         moment = np.cov(moment_1, moment_2)
@@ -317,8 +379,11 @@ class WaveletPhaseHarmonics:
                         moments.append(moment)
                         j_list.append((j1, j2, l1, l2))
                     elif((l1 - l2) <= 2):
+                        len_1 = len(field[j2][l2])
+                        len_2 = len(field[j2][l2][0])
                         moment_1 = field[j1][l1]
                         moment_1 = abs(moment_1)
+                        moment_1 = upsample_sphere_signal(moment_1, (len_1, len_2))
                         moment_2 = field[j2][l2]
                         moment_2 = abs(moment_2)
                         moment = np.cov(moment_1, moment_2)
@@ -336,20 +401,26 @@ class WaveletPhaseHarmonics:
             for l2 in range(len(field[j2])):
                 for l1 in range(len(field[j2])):
                     if(l1 == l2):
+                        len_1 = len(field[j2][l2])
+                        len_2 = len(field[j2][l2][0])
                         moment_1 = field[j1][l1]
                         moment_1 = abs(moment_1)
+                        moment_1 = upsample_sphere_signal(moment_1, (len_1, len_2))
                         moment_2 = field[j2][l2]
                         moment = np.cov(moment_1, moment_2)
                         moment = np.mean(moment)
                         moments.append(moment)
                         j_list.append((j1, j2, l1, l2))
                     elif((l1 - l2) <= 2):
+                        len_1 = len(field[j2][l2])
+                        len_2 = len(field[j2][l2][0])
                         moment_1 = field[j1][l1]
                         moment_1 = abs(moment_1)
+                        moment_1 = upsample_sphere_signal(moment_1, (len_1, len_2))
                         moment_2 = field[j2][l2]
                         moment = np.cov(moment_1, moment_2)
                         moment = np.mean(moment)
                         moments.append(moment)
                         j_list.append((j1, j2, l1, l2))
     return (moments, j_list)
-
+print
